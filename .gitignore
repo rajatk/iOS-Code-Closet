@@ -19,3 +19,7 @@ DerivedData
 
 #CocoaPods
 Pods
+
+#UserSpaces
+*/*.xcodeproj/xcuserdata
+*/*.xcodeproj/*.xcworkspace
