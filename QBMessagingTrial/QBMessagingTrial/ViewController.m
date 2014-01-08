@@ -13,10 +13,12 @@
 @property (weak, nonatomic) IBOutlet UITextField *usernameField;
 @property (weak, nonatomic) IBOutlet UITextField *passwordField;
 @property (retain) NSTimer *presenceTimer;
+@property (strong, nonatomic) NSString *userNameText, *passwordText;
 
 @end
 
 @implementation ViewController
+
 
 - (void)viewDidLoad
 {
@@ -37,17 +39,19 @@
 }
 
 - (IBAction)loginTapped:(id)sender {
-	
-	// Create session with user
-	QBASessionCreationRequest *extendedAuthRequest = [QBASessionCreationRequest request];
-	extendedAuthRequest.userLogin = [self.usernameField text];
-	extendedAuthRequest.userPassword = @"password";
-	
-	[QBAuth createSessionWithExtendedRequest:extendedAuthRequest delegate:self];
-	
-	
+	self.userNameText = [self.usernameField text];
+	self.userNameText = [self.passwordField text];
+	[self loginToQuickblox];
 }
 
+
+-(void)loginToQuickblox{
+	// Create session with user
+	QBASessionCreationRequest *extendedAuthRequest = [QBASessionCreationRequest request];
+	extendedAuthRequest.userLogin = self.userNameText;
+	extendedAuthRequest.userPassword = self.passwordText;
+	[QBAuth createSessionWithExtendedRequest:extendedAuthRequest delegate:self];
+}
 
 - (void)completedWithResult:(Result *)result{
 	
@@ -96,6 +100,7 @@
     // You have successfully signed in to QuickBlox Chat
 	MsgViewController *mvc = [[UIStoryboard storyboardWithName:@"Main" bundle:nil] instantiateViewControllerWithIdentifier:@"MsgViewController"];
 	mvc.view.frame = CGRectMake(0, 0, scrW, scrH);
+	mvc.username = self.userNameText;
 	[self presentViewController:mvc animated:YES completion:nil];
 }
 
@@ -103,4 +108,15 @@
     NSLog(@"New message: %@", [message text]);
 	//[self didSendText:[message text]];
 }
+- (IBAction)loginAsUser1:(id)sender {
+	self.userNameText = @"user1";
+	self.passwordText = @"password";
+	[self loginToQuickblox];
+}
+- (IBAction)loginAsUser2:(id)sender {
+	self.userNameText = @"user2";
+	self.passwordText = @"password";
+	[self loginToQuickblox];
+}
+
 @end

@@ -16,11 +16,21 @@
 
 
 @implementation MsgViewController
-NSInteger recepientID = 761567;
-//user1: 761567
-//user2: 761568
+@synthesize username;
+NSInteger recepientID;
+NSInteger user1ID = 761567;
+NSInteger user2ID = 761568;
 
 #pragma mark - View lifecycle
+
+
+-(void)viewWillAppear:(BOOL)animated{
+	if([self.username isEqualToString:@"user1"])
+		recepientID = user2ID;
+	else
+		recepientID = user1ID;
+	[super viewWillAppear:animated];
+}
 
 - (void)viewDidLoad
 {
